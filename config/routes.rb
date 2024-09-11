@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   namespace :api do
     post 'sign_up', to: 'authentications#sign_up'
     post 'log_in', to: 'authentications#login'
+    resources :conversations
+    resources :messages
   end
   
 end

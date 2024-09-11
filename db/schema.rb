@@ -12,16 +12,19 @@
 
 ActiveRecord::Schema[7.2].define(version: 2024_09_10_063458) do
   create_table "conversations", force: :cascade do |t|
-    t.integer "sender_id"
-    t.integer "recipient_id"
+    t.integer "sender_id", null: false
+    t.integer "recipient_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["recipient_id"], name: "index_conversations_on_recipient_id"
+    t.index ["sender_id", "recipient_id"], name: "index_conversations_on_sender_id_and_recipient_id", unique: true
+    t.index ["sender_id"], name: "index_conversations_on_sender_id"
   end
 
   create_table "messages", force: :cascade do |t|
     t.text "body"
-    t.integer "conversation_id"
-    t.integer "user_id"
+    t.integer "conversation_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["conversation_id"], name: "index_messages_on_conversation_id"
@@ -42,4 +45,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_10_063458) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "conversations", "users", column: "recipient_id"
+  add_foreign_key "conversations", "users", column: "sender_id"
+  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "users"
 end

@@ -1,5 +1,13 @@
 class ApplicationController < ActionController::Base
   # protect_from_forgery with: :null_session, if: -> { request.format.json? }
+  def current_user
+    return unless request.headers['Authorization']
+    
+    token = request.headers['Authorization'].split(' ').last
+    decoded_token = JWT.decode(token, Rails.application.secret_key_base, true, { algorithm: 'HS256' })[0]
+    User.find(decoded_token['user_id']) rescue nil
+  end
+  
   def not_found
     render json: { error: 'Route not found' }, status: :not_found
   end

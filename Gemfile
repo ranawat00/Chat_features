@@ -60,3 +60,19 @@ gem 'devise'
 
 gem 'jwt'
 gem 'bcrypt', '~> 3.1.7'
+
+group :development, :test do
+  gem 'rspec-rails'
+end
+
+group :test do
+  gem 'factory_bot_rails'
+  gem 'faker'
+  gem 'shoulda-matchers', '~> 5.0'
+  
+end
+
+ 
+
+
+

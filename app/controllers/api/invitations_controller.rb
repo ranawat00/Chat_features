@@ -20,13 +20,14 @@ class Api::InvitationsController < ApplicationController
     def accept
         @invitation = Invitation.find_by(token: params[:token])
         if @invitation
-          # Handle the acceptance logic, e.g., update status or perform other actions
           @invitation.update(status: 'accepted')
           render json: { status: 'success', message: 'Invitation accepted' }, status: :ok
         else
           render json: { status: 'error', message: 'Invalid invitation token' }, status: :not_found
         end
       end
+
+
     private
   
     def set_external_member

@@ -6,7 +6,7 @@ class Api::ExternalMembersController < ApplicationController
       if @external_member.save
         render json: @external_member, status: :created
       else
-        render json: @external_member.errors, status: :unprocessable_entity
+        render json: { errors: @external_member.errors.full_messages }, status: :unprocessable_entity
       end
   end
 
@@ -18,6 +18,8 @@ class Api::ExternalMembersController < ApplicationController
   def show
     @external_member = ExternalMember.find(params[:id])
     render json: @external_member
+  rescue ActiveRecord::RecordNotFound
+    head :not_found
   end
 
   def update

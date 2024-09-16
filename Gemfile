@@ -71,6 +71,14 @@ group :test do
   gem 'shoulda-matchers', '~> 5.0'
   
 end
+gem 'database_cleaner-active_record'
+
+# gem 'devise'
+# gem 'devise_token_auth'
+
+gem 'json_matchers', group: :test
+
+gem 'rspec-json_expectations', group: :test
 
  
 

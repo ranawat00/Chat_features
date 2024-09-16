@@ -16,17 +16,18 @@ class Api::ExternalChatsController < ApplicationController
   def start_chat
     external_member = ExternalMember.find_by(id: params[:external_member_id])
     return render json: { status: 'error', message: 'Member not found' }, status: :not_found if external_member.nil?
-    
+
     conversation = Conversation.find_by(id: params[:conversation_id])
     return render json: { status: 'error', message: 'Conversation not found' }, status: :not_found if conversation.nil?
-    
+
     user = User.find_by(id: params[:user_id])
     return render json: { status: 'error', message: 'User not found' }, status: :not_found if user.nil?
-    
-    message = external_member.messages.new(message_params)
+
+    message = Message.new(message_params)
     message.conversation = conversation
     message.user = user
-    
+    message.external_member = external_member
+
     if message.save
       render json: { status: 'success', message: message }
     else
@@ -38,10 +39,10 @@ class Api::ExternalChatsController < ApplicationController
   private
 
   def find_external_member
-    ExternalMember.find_by(id: params[:external_member_id]) # Ensure it's finding by `id`
+    ExternalMember.find_by(id: params[:external_member_id]) 
   end
 
   def message_params
-    params.require(:message).permit(:body)
+    params.require(:message).permit(:body,:conversation_id, :user_id)
   end
 end

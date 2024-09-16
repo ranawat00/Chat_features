@@ -1,9 +1,13 @@
 class Conversation < ApplicationRecord
   belongs_to :sender, foreign_key: :sender_id, class_name: 'User'
   belongs_to :recipient, foreign_key: :recipient_id, class_name:'User'
-  has_many :messages, dependent: :destroy
+  has_many :messages
+  has_many :external_chats
+  has_many :users, through: :messages
   belongs_to :external_chat
   belongs_to :external_member
+  validates :external_chat, presence: true
+  validates :external_member, presence: true
   
   # Additional validations and scopes
   validates_uniqueness_of :external_chat_id, scope: :external_member_id

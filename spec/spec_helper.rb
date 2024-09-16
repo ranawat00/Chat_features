@@ -17,6 +17,7 @@
 require 'factory_bot_rails'
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
+  # config.allow_unescaped_html = false
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
@@ -99,3 +100,7 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+
+# RSpec::JsonExpectations.configure do |config|
+#   config.allow_unescaped_html = false
+# end

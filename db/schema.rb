@@ -44,7 +44,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_13_172842) do
     t.string "token", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "status"
+    t.string "status", default: "pending"
     t.index ["external_member_id"], name: "index_invitations_on_external_member_id"
     t.index ["token"], name: "index_invitations_on_token", unique: true
   end

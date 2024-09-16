@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
     resources :external_members do
       resources :invitations, only: [:create]
-      post 'external_chats/search', to: 'external_chats#search'
+      get 'external_chats/search', to: 'external_chats#search'
       post 'external_chats/start_chat', to: 'external_chats#start_chat'
     end
     get 'invitations/:token/accept', to: 'invitations#accept', as: 'accept_invitation'

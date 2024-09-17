@@ -7,11 +7,12 @@ class Api::ConversationsController < ApplicationController
         @conversations = Conversation.all
         render json: @conversations
     end 
-
+    
     def show
+        @conversation = Conversation.find(params[:id])
         render json: @conversation
+      
     end
-
 
     def create
         if Conversation.between(params[:sender_id], params[:recipient_id]).present?

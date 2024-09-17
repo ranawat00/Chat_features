@@ -1,9 +1,10 @@
 class ExternalChat < ApplicationRecord
+    belongs_to :user
+    belongs_to :external_member
+    belongs_to :conversation
     has_many :messages
-    validates :email, presence: true, uniqueness: true
     has_many :conversations, dependent: :destroy
     has_many :external_members, through: :conversations
-    belongs_to :user
-    belongs_to :conversation
-    belongs_to :external_member
+  
+    validates :email, presence: true, uniqueness: true
 end

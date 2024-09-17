@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :external_chat do
-    email { "external_chat@example.com" }
+    email { Faker::Internet.email }
     association :user
-    association :conversation
     association :external_member
-    body { "Hello, this is a message" }
+    association :conversation # Only if required
+    # body { "Hello, this is a message" }
   end
 end

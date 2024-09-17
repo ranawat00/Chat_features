@@ -5,4 +5,5 @@ class Message < ApplicationRecord
     validates :user, presence: true
     validates :body, presence: true
     validates :conversation, presence: true
+    
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_13_172842) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_17_070858) do
   create_table "conversations", force: :cascade do |t|
     t.integer "sender_id", null: false
     t.integer "recipient_id", null: false
@@ -29,6 +29,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_13_172842) do
     t.string "email", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.integer "conversation_id", null: false
+    t.integer "external_member_id"
+    t.index ["conversation_id"], name: "index_external_chats_on_conversation_id"
     t.index ["email"], name: "index_external_chats_on_email", unique: true
   end
 
@@ -82,6 +86,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_13_172842) do
   add_foreign_key "conversations", "external_members"
   add_foreign_key "conversations", "users", column: "recipient_id"
   add_foreign_key "conversations", "users", column: "sender_id"
+  add_foreign_key "external_chats", "conversations"
   add_foreign_key "invitations", "external_members"
   add_foreign_key "messages", "conversations"
   add_foreign_key "messages", "external_chats"

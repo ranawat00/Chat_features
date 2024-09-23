@@ -7,7 +7,7 @@ class CreateConversations < ActiveRecord::Migration[7.2]
       t.timestamps
     end
 
-    # Add unique index to ensure a unique conversation between two users
+    
     add_index :conversations, [:sender_id, :recipient_id], unique: true
   end
 end

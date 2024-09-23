@@ -5,6 +5,8 @@ class ExternalChat < ApplicationRecord
     has_many :messages
     has_many :conversations, dependent: :destroy
     has_many :external_members, through: :conversations
+    has_many :external_chats
+
   
     validates :email, presence: true, uniqueness: true
 end

@@ -10,15 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_17_070858) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_23_115236) do
+  create_table "chat_messages", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "companies", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "conversations", force: :cascade do |t|
     t.integer "sender_id", null: false
     t.integer "recipient_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "external_chat_id"
+    t.string "external_member"
     t.integer "external_member_id"
-    t.index ["external_chat_id"], name: "index_conversations_on_external_chat_id"
     t.index ["external_member_id"], name: "index_conversations_on_external_member_id"
     t.index ["recipient_id"], name: "index_conversations_on_recipient_id"
     t.index ["sender_id", "recipient_id"], name: "index_conversations_on_sender_id_and_recipient_id", unique: true
@@ -59,11 +69,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_17_070858) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "external_chat_id"
-    t.integer "external_member_id"
     t.index ["conversation_id"], name: "index_messages_on_conversation_id"
-    t.index ["external_chat_id"], name: "index_messages_on_external_chat_id"
-    t.index ["external_member_id"], name: "index_messages_on_external_member_id"
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
@@ -71,25 +77,26 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_17_070858) do
     t.string "email", default: "", null: false
     t.string "first_name", default: "", null: false
     t.string "last_name", default: "", null: false
-    t.string "company", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "company_id"
+    t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "conversations", "external_chats"
   add_foreign_key "conversations", "external_members"
-  add_foreign_key "conversations", "users", column: "recipient_id"
+  add_foreign_key "conversations", "external_members", column: "recipient_id"
+  add_foreign_key "conversations", "external_members", column: "recipient_id"
+  add_foreign_key "conversations", "users", column: "sender_id"
   add_foreign_key "conversations", "users", column: "sender_id"
   add_foreign_key "external_chats", "conversations"
   add_foreign_key "invitations", "external_members"
   add_foreign_key "messages", "conversations"
-  add_foreign_key "messages", "external_chats"
-  add_foreign_key "messages", "external_members"
   add_foreign_key "messages", "users"
+  add_foreign_key "users", "companies"
 end

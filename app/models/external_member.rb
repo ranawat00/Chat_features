@@ -4,4 +4,5 @@ class ExternalMember < ApplicationRecord
     has_many :conversations, dependent: :destroy
     has_many :external_chats, through: :conversations
     has_many :invitations, dependent: :destroy
+    
 end

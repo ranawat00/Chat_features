@@ -1,12 +1,20 @@
 class Api::ConversationsController < ApplicationController
     before_action :set_conversation, only: [:show,:destroy,:update]
-    skip_before_action :verify_authenticity_token, only: [:create]
+    skip_before_action :verify_authenticity_token, only: [:create,:index]
 
 
     def index
-        @conversations = Conversation.all
-        render json: @conversations
-    end 
+      @conversations = Conversation.all
+      if params[:sort].present?
+        if params[:sort] == 'asc'
+          @conversations = @conversations.joins(:sender).order('users.name ASC')  # Sort by sender's name
+        elsif params[:sort] == 'desc'
+          @conversations = @conversations.joins(:sender).order('users.name DESC')
+        end
+      end
+      render json: @conversations.as_json(include: { sender: { only: :name }, recipient: { only: :name } }), status: :ok
+    end
+    
     
     def show
         @conversation = Conversation.find(params[:id])
@@ -30,18 +38,18 @@ class Api::ConversationsController < ApplicationController
         
     
         
-    def update
-        if @conversation.update(conversation_params)
-            render json: @conversation
-        else
-            render json: @conversation.errors, status: :unprocessable_entity
-        end
-    end
+    # def update
+    #     if @conversation.update(conversation_params)
+    #         render json: @conversation
+    #     else
+    #         render json: @conversation.errors, status: :unprocessable_entity
+    #     end
+    # end
 
-    def destroy 
-        @conversation.destroy
-        render json: {message: "Deleted conversation"}
-    end
+    # def destroy 
+    #     @conversation.destroy
+    #     render json: {message: "Deleted conversation"}
+    # end
 
     private
 

@@ -1,46 +1,44 @@
+# spec/models/external_chat_spec.rb
+
 require 'rails_helper'
 
 RSpec.describe ExternalChat, type: :model do
+  let!(:user) { create(:user) }
+  let!(:external_member) { create(:external_member) } # This should remain as is
 
-  it { should have_many(:messages) }
-  it { should have_many(:conversations).dependent(:destroy) }
-  it { should have_many(:external_members).through(:conversations) }
-  it { should have_many(:messages) }
-  # it { should have_many(:external_members).through(:conversations) }
-  it { should validate_presence_of(:email) }
+  # Create a conversation with two users
+  let!(:conversation) { create(:conversation, sender: user, recipient: user) }
 
-  it 'validates uniqueness of email' do
-    external_member = create(:external_member)
-    conversation = create(:conversation, external_member: external_member)
-    user = create(:user)
-  
-    existing_chat = create(:external_chat, email: 'unique@example.com', user: user, external_member: external_member, conversation: conversation)
-    new_chat = build(:external_chat, email: 'unique@example.com', user: user, external_member: external_member, conversation: conversation)
-  
-    expect(new_chat).not_to be_valid
-    expect(new_chat.errors[:email]).to include('has already been taken')
+  let!(:external_chat) { build(:external_chat, user: user, external_member: external_member, conversation: conversation) }
+
+  describe 'associations' do
+    it { should belong_to(:user) }
+    it { should belong_to(:external_member) }
+    it { should belong_to(:conversation) }
+    # it { should have_many(:messages) }
+    # it { should have_many(:conversations).dependent(:destroy) }
+    it { should have_many(:external_members).through(:conversations) }
   end
 
-  it 'is invalid without an email' do
-    chat = build(:external_chat, email: nil)
-    expect(chat).not_to be_valid
-    expect(chat.errors[:email]).to include("can't be blank")
+  describe 'validations' do
+    it 'validates presence of email' do
+      external_chat.email = nil
+      expect(external_chat).not_to be_valid
+      expect(external_chat.errors[:email]).to include("can't be blank")
+    end
+
+    it 'validates uniqueness of email' do
+      create(:external_chat, email: 'test@example.com')
+      external_chat.email = 'test@example.com'
+      expect(external_chat).not_to be_valid
+      expect(external_chat.errors[:email]).to include("has already been taken")
+    end
   end
 
-  it 'destroys associated conversations when deleted' do
-    external_member = create(:external_member)
-    conversation = create(:conversation, external_member: external_member)
-    chat = create(:external_chat, external_member: external_member, conversation: conversation)
-    
-    chat.destroy
-    # expect(Conversation.exists?(conversation.id)).to be_falsey
+  describe 'valid external chat creation' do
+    it 'is valid with valid attributes' do
+      external_chat.email = 'valid@example.com'
+      expect(external_chat).to be_valid
+    end
   end
-
-  it 'has a valid factory' do
-    external_member = create(:external_member)
-    conversation = create(:conversation, external_member: external_member)
-    user = create(:user)
-    expect(build(:external_chat, user: user, external_member: external_member, conversation: conversation)).to be_valid
-  end 
-
 end

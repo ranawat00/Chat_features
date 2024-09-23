@@ -26,7 +26,7 @@ class Api::ExternalChatsController < ApplicationController
     message = Message.new(message_params)
     message.conversation = conversation
     message.user = user
-    message.external_member = external_member
+    # message.external_member = external_member
 
     if message.save
       render json: { status: 'success', message: message }

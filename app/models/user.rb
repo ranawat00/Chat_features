@@ -6,4 +6,5 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :messages
   has_many :external_chats
+  belongs_to :company, optional: true
 end

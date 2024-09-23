@@ -12,12 +12,18 @@ Rails.application.routes.draw do
     post 'log_in', to: 'authentications#login'
 
     resources :external_members do
-      get 'external_chats/search', to: 'external_chats#search'
-      post 'external_chats/start_chat', to: 'external_chats#start_chat', on: :collection
-      resources :invitations, only: [:create,:accept]
+      resources :external_chats, only: [] do
+        collection do
+          get 'search'
+          post 'start_chat'  
+          
+        end
+      end
+      resources :invitations, only: [:create, :accept]
     end
 
     get 'invitations/:token/accept', to: 'invitations#accept', as: 'accept_invitation'
+    
     resources :conversations do
       resources :messages
     end

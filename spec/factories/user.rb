@@ -5,6 +5,8 @@ FactoryBot.define do
       password_confirmation { "password" }
       first_name { "First" }
       last_name { "Last" }
-      company { "Company" }
+      # company { "Company" }
+      association :company
+      company_id { 1 }
     end
   end

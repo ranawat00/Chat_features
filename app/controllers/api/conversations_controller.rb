@@ -1,5 +1,5 @@
 class Api::ConversationsController < ApplicationController
-    before_action :set_conversation, only: [:show,:destroy,:update]
+    before_action :set_conversation, only: [:show]
     skip_before_action :verify_authenticity_token, only: [:create,:index]
 
 
@@ -37,20 +37,6 @@ class Api::ConversationsController < ApplicationController
     end
         
     
-        
-    # def update
-    #     if @conversation.update(conversation_params)
-    #         render json: @conversation
-    #     else
-    #         render json: @conversation.errors, status: :unprocessable_entity
-    #     end
-    # end
-
-    # def destroy 
-    #     @conversation.destroy
-    #     render json: {message: "Deleted conversation"}
-    # end
-
     private
 
     def set_conversation

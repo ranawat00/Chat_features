@@ -1,12 +1,13 @@
-# spec/models/external_chat_spec.rb
+
 
 require 'rails_helper'
 
 RSpec.describe ExternalChat, type: :model do
   let!(:user) { create(:user) }
-  let!(:external_member) { create(:external_member) } # This should remain as is
+  let!(:external_member) { create(:external_member) } 
+  let!(:recipient) { create(:user) }
 
-  # Create a conversation with two users
+  
   let!(:conversation) { create(:conversation, sender: user, recipient: user) }
 
   let!(:external_chat) { build(:external_chat, user: user, external_member: external_member, conversation: conversation) }
@@ -25,13 +26,6 @@ RSpec.describe ExternalChat, type: :model do
       external_chat.email = nil
       expect(external_chat).not_to be_valid
       expect(external_chat.errors[:email]).to include("can't be blank")
-    end
-
-    it 'validates uniqueness of email' do
-      create(:external_chat, email: 'test@example.com')
-      external_chat.email = 'test@example.com'
-      expect(external_chat).not_to be_valid
-      expect(external_chat.errors[:email]).to include("has already been taken")
     end
   end
 

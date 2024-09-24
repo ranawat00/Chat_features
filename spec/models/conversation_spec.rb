@@ -1,4 +1,4 @@
-# spec/models/conversation_spec.rb
+
 
 require 'rails_helper'
 
@@ -26,20 +26,9 @@ RSpec.describe Conversation, type: :model do
       expect(conversation.errors[:recipient]).to include("must exist")
     end
 
-    # it 'validates uniqueness of sender_id scoped to recipient_id' do
-    #   create(:conversation, sender: user1, recipient: user2)
-    #   conversation = build(:conversation, sender: user1, recipient: user2)
-    #   expect(conversation).not_to be_valid
-    #   expect(conversation.errors[:sender_id]).to include("has already been taken")
-    # end
   end
 
   describe '.between' do
-    # it 'returns conversations between two users' do
-    #   create(:conversation, sender: user1, recipient: user2)
-    #   create(:conversation, sender: user2, recipient: user1)
-    #   expect(Conversation.between(user1.id, user2.id).count).to eq(2)
-    # end
 
     it 'does not return conversations not involving the users' do
       user3 = create(:user)

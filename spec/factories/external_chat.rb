@@ -4,6 +4,6 @@ FactoryBot.define do
     association :user
     association :external_member
     association :conversation # Only if required
-    # body { "Hello, this is a message" }
+    body { "Hello, this is a message" }
   end
 end

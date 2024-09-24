@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     resources :external_members do
       resources :external_chats, only: [] do
         collection do
-          get 'search'
+         get'search'
           post 'start_chat'  
           
         end

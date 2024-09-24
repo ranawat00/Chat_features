@@ -80,6 +80,10 @@ gem 'json_matchers', group: :test
 
 gem 'rspec-json_expectations', group: :test
 
+group :test do
+  gem 'rails-controller-testing'
+end
+
  
 
 
